@@ -1,10 +1,13 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'maven3' // Jenkins에 설정된 Maven 도구 이름
+    }
+
     environment {
         JAVA_HOME = 'C:\\Program Files\\Android\\Android Studio\\jbr' 
         ANDROID_HOME = 'C:\\Users\\WW\\AppData\\Local\\Android\\Sdk'
-        // 메이븐(Maven) 경로가 PATH에 없다면 아래에 메이븐 bin 경로도 추가하세요.
         PATH = "${JAVA_HOME}\\bin;${ANDROID_HOME}\\platform-tools;${env.PATH}"
     }
 
