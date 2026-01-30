@@ -1,0 +1,47 @@
+pipeline {
+    agent { label 'windows' } // Windows 전용 노드라면 라벨 지정
+
+    tools {
+        maven 'M3'    // Jenkins에 등록된 Maven 설치 이름
+        jdk 'JDK11'    // Jenkins에 등록된 JDK 이름
+    }
+
+    environment {
+        JAVA_HOME = 'C:\\Program Files\\Android\\Android Studio\\jbr'
+        ANDROID_HOME = 'C:\\Users\\WW\\AppData\\Local\\Android\\Sdk'
+        PATH = "${JAVA_HOME}\\bin;${ANDROID_HOME}\\platform-tools;${env.PATH}"
+    }
+
+    stages {
+        stage('환경 확인') {
+            steps {
+                echo '연결된 안드로이드 기기 확인...'
+                bat 'adb devices'
+            }
+        }
+
+        stage('빌드') {
+            steps {
+                dir('jenkins-test') {
+                    bat 'mvn clean compile'
+                }
+            }
+        }
+
+        stage('Appium 테스트') {
+            steps {
+                dir('jenkins-test') {
+                    bat 'mvn test'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo '테스트 리포트 수집'
+            junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+            archiveArtifacts artifacts: 'jenkins-test/target/**/*.jar, jenkins-test/target/**/*.log', allowEmptyArchive: true
+        }
+    }
+}
