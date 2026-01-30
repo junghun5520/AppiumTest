@@ -3,6 +3,7 @@
 <suite name="Appium Suite">
     <test name="Calculator Test">
         <classes>
-            <class name="com.example.AppTest"/> </classes>
+            <class name="com.test.CalculatorTest"/> 
+        </classes>
     </test>
 </suite>
