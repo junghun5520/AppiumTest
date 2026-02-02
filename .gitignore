@@ -1,2 +1,16 @@
 # Ignore Jenkins runtime data
 jenkins-test/jenkins_home/
+
+# Maven
+target/
+
+# IntelliJ / IDE
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
